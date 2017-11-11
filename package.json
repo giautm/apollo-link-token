@@ -1,0 +1,63 @@
+{
+  "name": "apollo-link-token",
+  "version": "1.0.0-beta",
+  "description": "",
+  "author": "Giau. Tran Minh <giau.tmg@gmail.com>",
+  "contributors": [
+  ],
+  "license": "MIT",
+  "main": "./lib/bundle.umd.js",
+  "module": "./lib/tokenLink.js",
+  "jsnext:main": "./lib/tokenLink.js",
+  "typings": "./lib/tokenLink.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giautm/apollo-link-token.git"
+  },
+  "bugs": {
+    "url": "https://github.com/giautm/apollo-link-token/issues"
+  },
+  "homepage": "https://github.com/giautm/apollo-link-token#readme",
+  "scripts": {
+    "build:browser":
+      "browserify ./lib/bundle.umd.js -o=./lib/bundle.js --i apollo-link && npm run minify:browser",
+    "build": "tsc -p .",
+    "bundle": "rollup -c",
+    "clean": "rimraf lib/* && rimraf coverage/*",
+    "filesize": "npm run build && npm run build:browser",
+    "lint":
+      "tslint --type-check -p tsconfig.json -c ../../tslint.json src/*.ts",
+    "minify:browser":
+      "uglifyjs -c -m -o ./lib/bundle.min.js -- ./lib/bundle.js",
+    "postbuild": "npm run bundle",
+    "prebuild": "npm run clean",
+    "prepublishOnly": "npm run clean && npm run build",
+    "test": "jest",
+    "watch": "tsc -w -p ."
+  },
+  "peerDependencies": {
+    "apollo-link": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/graphql": "0.11.5",
+    "@types/jest": "21.1.5",
+    "apollo-link": "^1.0.0",
+    "browserify": "14.5.0",
+    "graphql": "0.11.7",
+    "graphql-tag": "2.5.0",
+    "jest": "21.2.1",
+    "rimraf": "2.6.1",
+    "rollup": "0.51.3",
+    "ts-jest": "21.2.1",
+    "tslint": "5.8.0",
+    "typescript": "2.6.1",
+    "uglify-js": "3.1.8"
+  },
+  "jest": {
+    "transform": {
+      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": ["ts", "tsx", "js", "json"]
+  }
+}
