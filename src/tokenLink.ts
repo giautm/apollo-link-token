@@ -31,17 +31,19 @@ export class TokenLink extends ApolloLink {
     forward: NextLink,
   ): Observable<FetchResult> {
     return new Observable<FetchResult>((observer) => {
-      const promise = this.getValidTokenAsync().then((token: string) => {
-        operation.setContext(({ headers, ...context }) => ({
-          ...context,
-          headers: {
-            ...headers,
-            authorization: token ? `Bearer ${token}` : null,
-          },
-        }));
-        return forward(operation);
-      }).then((nextLinkObservable: Observable<FetchResult>) =>
-        nextLinkObservable.subscribe(observer));
+      const promise = this.getValidTokenAsync()
+        .then((token: string) => {
+          operation.setContext(({ headers }) => ({
+            headers: {
+              ...headers,
+              authorization: token ? `Bearer ${token}` : null,
+            },
+          }));
+          return forward(operation);
+        })
+        .then((nextLinkObservable: Observable<FetchResult>) =>
+          nextLinkObservable.subscribe(observer))
+        .catch(observer.error.bind(observer));
 
       return () => {
         promise.then((subscription) => {
